@@ -7,7 +7,7 @@ EXECUTE	:= nqueen.exe
 NUMBER	:= 15
 
 CXX			:= clang++
-CXXFLAGS	:= -Wall -Weffc++ -O2
+CXXFLAGS	:= -Wall -Weffc++ -Os
 
 check: $(EXECUTE)
 	time ./$(EXECUTE) $(NUMBER)

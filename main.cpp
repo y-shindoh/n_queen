@@ -10,7 +10,9 @@
 #include <cstdlib>
 #include "nqueen.hpp"
 
-
+/**
+ * ビット演算を用いたN-queenのサンプル・コマンド
+ */
 int
 main(int length,
 	 char** arguments)

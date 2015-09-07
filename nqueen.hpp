@@ -48,12 +48,12 @@ namespace ys
 				l >>= 1;
 				r <<= 1;
 
-				DTYPE t = (~(v | (l | r))) & ~(~((DTYPE)0) << w);
+				DTYPE t = ~(v | l | r) & ~(~(DTYPE)0 << w);
 				DTYPE i;
 				RTYPE n(0);
 
 				while (t != 0) {
-					i = (t ^ (t & (t - (DTYPE)1)));	// 置き場所を1つ抽出
+					i = t ^ (t & (t - (DTYPE)1));	// 置き場所を1つ抽出
 					n += Nqueen<DTYPE, RTYPE>::execute(w, d + (DTYPE)1, v | i, l | i, r | i);
 					t ^= i;
 				}
