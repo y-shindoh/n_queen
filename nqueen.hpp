@@ -33,6 +33,7 @@ namespace ys
 		 * @return	各時点でのパターン (バリエーション解) の総数
 		 * @note	引数の「クイーンを置けない場所」は、
 					メソッド呼び出し時の状況を表現すれば良い。
+		 * @todo	再帰処理を展開して高速化できるか検証する。
 		 */
 		static RTYPE
 		execute(DTYPE w,
