@@ -44,17 +44,16 @@ namespace ys
 				if (w <= d) return (RTYPE)1;	// 解を1つ発見
 
 				// クイーンの置けない場所を調整
-				l = l >> 1;
-				r = r << 1;
+				l >>= 1;
+				r <<= 1;
 
 				DTYPE t = (~(v | (l | r))) & ~(~((DTYPE)0) << w);
 				DTYPE i;
 				RTYPE n(0);
 
-				while ('-') {
-					i = (t ^ (t & (t - 1)));	// 置き場所を1つ抽出
-					if (0 == i) break;
-					n += Nqueen<DTYPE, RTYPE>::execute(w, d+1, v | i, l | i, r | i);
+				while (t != 0) {
+					i = (t ^ (t & (t - (DTYPE)1)));	// 置き場所を1つ抽出
+					n += Nqueen<DTYPE, RTYPE>::execute(w, d + (DTYPE)1, v | i, l | i, r | i);
 					t ^= i;
 				}
 
@@ -81,7 +80,7 @@ namespace ys
 					n += Nqueen<DTYPE, RTYPE>::execute(w, (DTYPE)1, v, v, v);
 				}
 
-				n *= 2;
+				n *= 2;	// 左右対称
 
 				if (w % 2 != 0) {
 					v = (DTYPE)1 << (w / 2);
