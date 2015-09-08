@@ -25,8 +25,6 @@ namespace ys
 
 		/**
 		 * N-queenの探索器 (補助メソッド)
-		 * @param[in]	w	チェス盤の幅・高さ
-		 * @param[in]	d	すでにクイーンを置いてある行数
 		 * @param[in]	v	クイーンを置けない場所 (水平方向)
 		 * @param[in]	l	クイーンを置けない場所 (左斜め上方向)
 		 * @param[in]	r	クイーンを置けない場所 (右斜め上方向)
@@ -36,25 +34,23 @@ namespace ys
 		 * @todo	再帰処理を展開して高速化できるか検証する。
 		 */
 		static RTYPE
-		execute(DTYPE w,
-				DTYPE d,
-				DTYPE v,
+		execute(DTYPE v,
 				DTYPE l,
 				DTYPE r)
 			{
-				if (w <= d) return (RTYPE)1;	// 解を1つ発見
+				if (v == ~(DTYPE)0) return (RTYPE)1;	// 解を1つ発見
 
 				// クイーンの置けない場所を調整
 				l >>= 1;
 				r <<= 1;
 
-				DTYPE t = ~(v | l | r) & ~(~(DTYPE)0 << w);
+				DTYPE t = ~(v | l | r);
 				DTYPE i;
 				RTYPE n(0);
 
 				while (t != 0) {
 					i = t ^ (t & (t - (DTYPE)1));	// 置き場所を1つ抽出
-					n += Nqueen<DTYPE, RTYPE>::execute(w, d + (DTYPE)1, v | i, l | i, r | i);
+					n += Nqueen<DTYPE, RTYPE>::execute(v | i, l | i, r | i);
 					t ^= i;
 				}
 
@@ -78,14 +74,14 @@ namespace ys
 
 				for (DTYPE i(0); i < w / 2; ++i) {
 					v = (DTYPE)1 << i;
-					n += Nqueen<DTYPE, RTYPE>::execute(w, (DTYPE)1, v, v, v);
+					n += Nqueen<DTYPE, RTYPE>::execute(v | (~(DTYPE)0 << w), v, v);
 				}
 
 				n *= 2;	// 左右対称
 
 				if (w % 2 != 0) {
 					v = (DTYPE)1 << (w / 2);
-					n += Nqueen<DTYPE, RTYPE>::execute(w, (DTYPE)1, v, v, v);
+					n += Nqueen<DTYPE, RTYPE>::execute(v | (~(DTYPE)0 << w), v, v);
 				}
 
 				return n;
