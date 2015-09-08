@@ -10,6 +10,7 @@ CXX			:= clang++
 CXXFLAGS	:= -Wall -Weffc++ -Os
 
 check: $(EXECUTE)
+	# check: $(<F)
 	time ./$(EXECUTE) $(NUMBER)
 
 all: $(EXECUTE)
