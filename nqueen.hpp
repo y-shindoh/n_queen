@@ -23,15 +23,16 @@ namespace ys
 	{
 	private:
 
+#ifdef	__NQUEEN_HPP_USE_RECURSIVE__
+
 		/**
-		 * N-queenの探索器 (補助メソッド)
+		 * N-queenの探索器 (補助メソッド, 再帰処理版)
 		 * @param[in]	v	クイーンを置けない場所 (水平方向)
 		 * @param[in]	l	クイーンを置けない場所 (左斜め上方向)
 		 * @param[in]	r	クイーンを置けない場所 (右斜め上方向)
 		 * @return	各時点でのパターン (バリエーション解) の総数
 		 * @note	引数の「クイーンを置けない場所」は、
 					メソッド呼び出し時の状況を表現すれば良い。
-		 * @todo	再帰処理を展開して高速化できるか検証する。
 		 */
 		static RTYPE
 		execute(DTYPE v,
@@ -50,12 +51,59 @@ namespace ys
 
 				while (t != 0) {
 					i = t ^ (t & (t - (DTYPE)1));	// 置き場所を1つ抽出
-					n += Nqueen<DTYPE, RTYPE>::execute(v | i, l | i, r | i);
 					t ^= i;
+					n += Nqueen<DTYPE, RTYPE>::execute(v | i, l | i, r | i);
 				}
 
 				return n;
 			}
+
+#else	// __NQUEEN_HPP_USE_RECURSIVE__
+
+		/**
+		 * N-queenの探索器 (補助メソッド, 非再帰処理版)
+		 * @param[in]	v	クイーンを置けない場所 (水平方向)
+		 * @param[in]	l	クイーンを置けない場所 (左斜め上方向)
+		 * @param[in]	r	クイーンを置けない場所 (右斜め上方向)
+		 * @return	各時点でのパターン (バリエーション解) の総数
+		 * @note	引数の「クイーンを置けない場所」は、
+					メソッド呼び出し時の状況を表現すれば良い。
+		 */
+		static RTYPE
+		execute(DTYPE v0,
+				DTYPE l0,
+				DTYPE r0)
+			{
+				DTYPE v[sizeof(DTYPE)*8-1] = {v0};
+				DTYPE l[sizeof(DTYPE)*8-1] = {l0 >> 1};
+				DTYPE r[sizeof(DTYPE)*8-1] = {r0 << 1};
+				DTYPE t[sizeof(DTYPE)*8-1] = {~(v[0] | l[0] | r[0])};
+				DTYPE i[sizeof(DTYPE)*8-1];
+				RTYPE n(0);
+				int k(0);
+
+				while ('-') {
+					if (t[k] == 0) {
+						if (0 <= --k) continue;
+						break;
+					}
+					i[k] = t[k] ^ (t[k] & (t[k] - (DTYPE)1));
+					t[k] ^= i[k];
+					v[k+1] = v[k] | i[k];
+					if (v[k+1] == ~(DTYPE)0) {
+						++n;
+						continue;
+					}
+					l[k+1] = (l[k] | i[k]) >> 1;
+					r[k+1] = (r[k] | i[k]) << 1;
+					t[k+1] = ~(v[k+1] | l[k+1] | r[k+1]);
+					++k;
+				}
+
+				return n;
+			}
+
+#endif	// __NQUEEN_HPP_USE_RECURSIVE__
 
 	public:
 
