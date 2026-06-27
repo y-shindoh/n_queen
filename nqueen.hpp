@@ -117,7 +117,9 @@ namespace ys
 		static RTYPE
 		execute(DTYPE w)
 			{
-				assert(w <= sizeof(DTYPE) * 8);
+				// DTYPEのビット幅と同じ盤面サイズは対象外とする。
+				assert(w < sizeof(DTYPE) * 8);
+				if (sizeof(DTYPE) * 8 <= w) return (RTYPE)0;
 
 				RTYPE n(0);
 				DTYPE v;
