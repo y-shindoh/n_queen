@@ -7,8 +7,8 @@ EXECUTE	:= nqueen.exe
 NUMBER	:= 15
 
 CXX			:= clang++
-#CXXFLAGS	:= -Wall -Weffc++ -Os -D__NQUEEN_HPP_USE_RECURSIVE__
-CXXFLAGS	:= -Wall -Weffc++ -Os
+CXXFLAGS	:= -Wall -Weffc++ -Os -D__NQUEEN_HPP_USE_RECURSIVE__
+#CXXFLAGS	:= -Wall -Weffc++ -Os
 
 check: $(EXECUTE)
 	# check: $(<F)
