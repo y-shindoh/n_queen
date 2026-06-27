@@ -74,6 +74,8 @@ namespace ys
 				DTYPE l0,
 				DTYPE r0)
 			{
+				if (v0 == ~(DTYPE)0) return (RTYPE)1;	// 解を1つ発見
+
 				DTYPE v[sizeof(DTYPE)*8-1] = {v0};
 				DTYPE l[sizeof(DTYPE)*8-1] = {l0 >> 1};
 				DTYPE r[sizeof(DTYPE)*8-1] = {r0 << 1};
